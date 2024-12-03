@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef } from "react";
+
 export default function App() {
   const [day, setDay] = useState("Monday");
+
   const prevDay = usePrevious(day);
+  console.log(prevDay);
+
   const getNextDay = () => {
     if (day === "Monday") {
       setDay("Tuesday")
@@ -15,22 +19,30 @@ export default function App() {
       setDay("Monday")
     }
   }
+
   return (
-    <div style={{padding: "40px"}}>
+    <div style={ {padding: "40px"} }>
       <h1>
-        Today is: {day}<br />
+        Today is: { day }<br />
         {
           prevDay && (
-            <span>Previous work day was: {prevDay}</span>
+            <span>Previous work day was: { prevDay }</span>
           )
         }
       </h1>
-      <button onClick={getNextDay}>
+      <button onClick={ getNextDay }>
         Get next day
       </button>
     </div>
   );
-}
-function usePrevious(val) {
+};
 
+function usePrevious(val) {
+ const ref = useRef();
+ 
+ useEffect( () => {
+  ref.current = val;
+ }, [val]);
+
+ return ref.current;
 }
